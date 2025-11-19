@@ -20,29 +20,60 @@
     padding: 20px;
   }
   
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  
   /* Title */
   .title {
-    margin: 0 0 18px 0;
-    font-size: 24px;
+    margin: 0 0 8px 0;
+    font-size: 28px;
     font-weight: 700;
-    color: var(--accent);
+    color: #111827;
+  }
+  
+  .subtitle {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
   }
   
   /* Form */
   .form {
     display: grid;
-    gap: 10px;
+    gap: 12px;
     grid-template-columns: 1fr;
     margin-bottom: 12px;
   }
   
+  /* Input Wrapper */
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 12px;
+    font-size: 18px;
+    z-index: 1;
+    color: #6b7280;
+    opacity: 0.7;
+  }
+  
   .input {
-    padding: 12px;
-    border-radius: 6px;
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border-radius: 8px;
     border: 1px solid #d1d5db;
     outline: none;
     font-size: 14px;
     background: white;
+    box-sizing: border-box;
   }
   
   .input:focus {
@@ -50,21 +81,35 @@
     box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
   }
   
-  /* Controls */
-  .controls {
+  /* Query Input with Button */
+  .query-wrapper {
     display: flex;
-    gap: 12px;
     align-items: center;
+    gap: 8px;
+  }
+  
+  .query-input {
+    flex: 1;
+    padding-right: 100px;
   }
   
   .btn {
-    padding: 10px 16px;
-    background: var(--accent);
+    position: absolute;
+    right: 8px;
+    padding: 8px 20px;
+    background: #3b82f6;
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  
+  .btn:hover:not(:disabled) {
+    background: #2563eb;
   }
   
   .btn:disabled {

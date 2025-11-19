@@ -46,17 +46,16 @@ def search_db(db, query_emb):
         if not docs or len(docs) == 0:
             return []
 
-        # Convert distance to percentage match
-        # Cosine distance ranges from 0 (identical) to ~2 (completely different)
-        # Formula: percentage = max(0, min(100, (1 - distance/2) * 100))
+  
         results_list = []
         for i in range(len(docs)):
             distance = float(distances[i])
-            # Convert distance to percentage: 0 distance = 100%, 2 distance = 0%
-            percentage = max(0, min(100, (1 - distance / 2) * 100))
+      
+            percentage = max(0, min(100, (1 - distance / 5.0) * 100))
+            
             results_list.append({
                 "chunk": docs[i],
-                "match": round(percentage, 0)  # Round to whole number
+                "match": round(percentage, 0) 
             })
         
         return results_list

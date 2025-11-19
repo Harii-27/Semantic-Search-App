@@ -69,51 +69,67 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="title">Semantic Search App</h1>
+      <div className="header">
+        <h1 className="title">Website Content Search</h1>
+        <p className="subtitle">Search through website content with precision</p>
+      </div>
 
       <form className="form" onSubmit={handleSubmit}>
-        <input
-          className="input"
-          type="text"
-          placeholder="Enter website URL (include http:// or https://)"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
+        <div className="input-wrapper">
+          <span className="input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </span>
+          <input
+            className="input"
+            type="text"
+            placeholder="Enter website URL"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+        </div>
 
-        <input
-          className="input"
-          type="text"
-          placeholder="Enter search query"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-
-        <div className="controls">
+        <div className="input-wrapper query-wrapper">
+          <span className="input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </span>
+          <input
+            className="input query-input"
+            type="text"
+            placeholder="Enter your search query"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
           <button className="btn" type="submit" disabled={loading}>
-            Search
+            {loading ? "Searching..." : "Search"}
           </button>
-
-          {loading && (
-            <div className="loader" aria-hidden="true" title="Searching..."></div>
-          )}
         </div>
       </form>
 
       {error && <div className="error">{error}</div>}
 
-      <h2 className="results-title">Results:</h2>
-
-      <div className="results-scroll">
-        {results.map((r, i) => (
-          <ResultCard
-            key={i}
-            index={i + 1}
-            chunk={r.chunk}
-            match={r.match}
-            query={query}
-          />
-        ))}
-      </div>
+      {results.length > 0 && (
+        <>
+          <h2 className="results-title">Search Results:</h2>
+          <div className="results-scroll">
+            {results.map((r, i) => (
+              <ResultCard
+                key={i}
+                index={i + 1}
+                chunk={r.chunk}
+                match={r.match}
+                query={query}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
