@@ -1,4 +1,3 @@
-import React from "react";
 
 function highlightText(text = "", query = "") {
   if (!query) return escapeHtml(text);

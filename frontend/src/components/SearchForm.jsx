@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { searchAPI } from "../utils/api";
 
 export default function SearchForm({ setResults }) {
