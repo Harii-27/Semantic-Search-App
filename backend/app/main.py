@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -27,10 +27,62 @@ class SearchRequest(BaseModel):
 
 @app.post("/search")
 def search(req: SearchRequest):
-    text = fetch_clean_text(req.url)
-    chunks = chunk_text(text)
-    chunk_embeddings = embed_texts(chunks)
-    add_to_db(db, chunks, chunk_embeddings)
-    q_emb = embed_query(req.query)
-    results = search_db(db, q_emb)
-    return results
+    """
+    Search endpoint: Fetches URL, chunks content, and performs semantic search.
+    Returns top 10 most relevant chunks.
+    """
+    try:
+        # Fetch and clean HTML content
+        text = fetch_clean_text(req.url)
+        
+        # Validate text was extracted
+        if not text or len(text.strip()) == 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Failed to extract text content from the provided URL. The page might be empty or inaccessible."
+            )
+        
+        # Chunk the text
+        chunks = chunk_text(text)
+        
+        # Validate chunks were created
+        if not chunks or len(chunks) == 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Failed to create text chunks from the URL content."
+            )
+        
+        # Generate embeddings for chunks
+        chunk_embeddings = embed_texts(chunks)
+        
+        # Initialize fresh database for this search
+        global db
+        db = init_db()
+        
+        # Add chunks to database
+        add_to_db(db, chunks, chunk_embeddings)
+        
+        # Generate query embedding
+        q_emb = embed_query(req.query)
+        
+        # Perform semantic search
+        results = search_db(db, q_emb)
+        
+        # Validate results
+        if not results or len(results) == 0:
+            raise HTTPException(
+                status_code=404,
+                detail="No relevant results found for the given query."
+            )
+        
+        return results
+        
+    except HTTPException:
+        # Re-raise HTTP exceptions
+        raise
+    except Exception as e:
+        # Handle any other errors
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred during search: {str(e)}"
+        )

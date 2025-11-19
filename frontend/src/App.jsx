@@ -41,8 +41,17 @@ function App() {
       });
 
       if (!res.ok) {
-        const txt = await res.text();
-        throw new Error(`Server error: ${res.status} ${txt}`);
+        // Try to parse JSON error response
+        let errorMessage = `Server error: ${res.status}`;
+        try {
+          const errorData = await res.json();
+          errorMessage = errorData.detail || errorData.message || errorMessage;
+        } catch {
+          // If not JSON, try text
+          const txt = await res.text();
+          errorMessage = txt || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await res.json();
@@ -52,7 +61,7 @@ function App() {
         setError("No results found for this query / page.");
       }
     } catch (err) {
-      setError("Request failed: " + (err.message || err));
+      setError(err.message || "Request failed. Please check the URL and try again.");
     } finally {
       setLoading(false);
     }
@@ -100,7 +109,7 @@ function App() {
             key={i}
             index={i + 1}
             chunk={r.chunk}
-            score={r.score}
+            match={r.match}
             query={query}
           />
         ))}

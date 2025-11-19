@@ -135,9 +135,13 @@
     color: var(--accent);
   }
   
-  .score {
+  .match-score {
     font-size: 13px;
-    color: var(--muted);
+    font-weight: 600;
+    color: #16a34a;
+    background: #dcfce7;
+    padding: 4px 8px;
+    border-radius: 12px;
   }
   
   /* Highlight */

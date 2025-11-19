@@ -31,12 +31,12 @@ function escapeHtml(str) {
     .replace(/>/g, ">");
 }
 
-export default function ResultCard({ index, chunk, score, query }) {
+export default function ResultCard({ index, chunk, match, query }) {
   return (
     <div className="card">
       <div className="card-header">
         <div className="chunk-num">#{index}</div>
-        <div className="score">Score: {Number(score).toFixed(4)}</div>
+        <div className="match-score">{match}% match</div>
       </div>
 
       <div className="card-body">{highlightText(chunk, query)}</div>
