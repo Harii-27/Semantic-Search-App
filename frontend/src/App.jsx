@@ -41,13 +41,11 @@ function App() {
       });
 
       if (!res.ok) {
-        // Try to parse JSON error response
         let errorMessage = `Server error: ${res.status}`;
         try {
           const errorData = await res.json();
           errorMessage = errorData.detail || errorData.message || errorMessage;
         } catch {
-          // If not JSON, try text
           const txt = await res.text();
           errorMessage = txt || errorMessage;
         }
@@ -55,7 +53,6 @@ function App() {
       }
 
       const data = await res.json();
-      // ensure array
       setResults(Array.isArray(data) ? data : []);
       if (!Array.isArray(data) || data.length === 0) {
         setError("No results found for this query / page.");

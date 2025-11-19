@@ -1,27 +1,17 @@
 import chromadb
 
 def init_db():
-    """
-    Initialize a fresh ChromaDB collection for storing web chunks.
-    Deletes old collection if it exists to ensure clean state.
-    """
-    # Create fresh client
     client = chromadb.Client()
 
-    # Delete old collection if exists (prevents old chunks being reused)
     try:
         client.delete_collection("web_chunks")
     except:
         pass
 
-    # Create a new clean collection every run
     return client.create_collection("web_chunks")
 
 
 def add_to_db(db, chunks, embeddings):
-    """
-    Add chunks and their embeddings to the vector database.
-    """
     if not chunks or len(chunks) == 0:
         raise Exception("Cannot add empty chunks to database")
     
@@ -33,11 +23,7 @@ def add_to_db(db, chunks, embeddings):
 
 
 def search_db(db, query_emb):
-    """
-    Search the vector database for most relevant chunks.
-    Returns top 10 results with match percentage (0-100%).
-    Converts distance score to percentage match.
-    """
+ 
     try:
         results = db.query(query_embeddings=[query_emb], n_results=10)
         docs = results["documents"][0]
@@ -50,8 +36,8 @@ def search_db(db, query_emb):
         results_list = []
         for i in range(len(docs)):
             distance = float(distances[i])
-      
-            percentage = max(0, min(100, (1 - distance / 5.0) * 100))
+           
+            percentage = max(0, min(100, (1 - distance / 6.0) * 100))
             
             results_list.append({
                 "chunk": docs[i],

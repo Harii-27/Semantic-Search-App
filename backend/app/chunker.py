@@ -2,10 +2,7 @@ from transformers import AutoTokenizer
 tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
 def chunk_text(text, max_tokens=500):
-    """
-    Tokenize text and split into chunks of maximum tokens.
-    Returns list of text chunks.
-    """
+  
     if not text or len(text.strip()) == 0:
         return []
     
